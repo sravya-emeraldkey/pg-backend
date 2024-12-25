@@ -1,0 +1,3 @@
+-AmazonS3FullAccess
+-lambdaInvoke
+

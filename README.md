@@ -1,92 +1,109 @@
 # PG-BACKEND
 
-**Priority Gold Backend Repository**
-
-This repository contains Lambda functions and utilities for backend processing in the Priority Gold project. The primary focus is on integrating and managing data from Velocify,Callrail and RingCentral platforms, handling S3 bucket operations, and pushing data to AWS Redshift.
-
----
-
-## **Project Structure**
-
-### **Directories**
-
-- **Lambdas/**: Contains AWS Lambda functions for various data processing tasks.
-  - **deleteVelocifyOldCallLogsFromS3**: Deletes old call logs from S3.
-  - **deleteVelocifyOldCallRecordingsFromS3**: Deletes old call recordings from S3.
-  - **deleteVelocifyOldLeadsFromS3**: Deletes old lead records from S3.
-  - **exportJsonsToCSV**: Exports JSON data to CSV format.
-  - **processCallRailData**: Processes call data from CallRail.
-  - **processRingCentralData**: Processes data from RingCentral.
-  - **processVelocifyData**: Processes data from Velocify.
-  - **pushBrokersToRedshift**: Pushes broker data to Redshift.
-  - **pushVelocifyCallLogsToRedshift**: Pushes Velocify call logs to Redshift.
-  - **pushVelocifyLeadsToRedshift**: Pushes Velocify lead data to Redshift.
-  - **redshift-utility**: Contains utility scripts for Redshift.
-  - **ringCentralRecordingDownloader**: Downloads recordings from RingCentral.
-  - **VelocifyCSVSplitterAndUploader**: Splits large Velocify CSV files and uploads them to S3.
-
-- **Layers/**: Contains shared dependencies packaged as Lambda layers.
-  - **jwt.zip**: JWT library for authentication.
-  - **requests.zip**: Requests library for HTTP operations.
+## Overview
+Priority Gold Backend (PG-Backend) repository contains serverless functions and configurations to manage backend operations for Priority Gold. The system integrates AWS services like Lambda, EventBridge, S3, Redshift, and more to handle workflows, data processing, and ETL tasks efficiently.
 
 ---
 
-## **Setup Instructions**
+## Project Structure
+
+```
+PG-BACKEND/
+├── EventBridge/            # EventBridge rule configurations for triggering workflows
+├── IAM/                    # IAM roles and policies for access management
+├── Lambdas/                # AWS Lambda functions for processing various tasks
+│   ├── config/             # Configuration folder
+│   │   ├── .env            # Environment variables for Lambdas
+│   │   ├── permissions.py  # Defines permission settings
+│   │   ├── layers.py       # Configuration of Lambda layers
+│   ├── deleteVelocifyOldCallLogsFromS3/
+│   ├── deleteVelocifyOldCallRecordingsFromS3/
+│   ├── deleteVelocifyOldLeadsFromS3/
+│   ├── exportJsonsToCSV/
+│   ├── processCallRailData/
+│   ├── processRingCentralData/
+│   ├── processVelocifyData/
+│   ├── pushBrokersToRedshift/
+│   ├── pushVelocifyCallLogsToRedshift/
+│   ├── pushVelocifyLeadsToRedshift/
+│   ├── redshift-utility/
+│   ├── ringCentralRecordingDownloader/
+│   ├── VelocifyCVSSplitterAndUploader/
+├── Layers/                 # Shared Lambda layers (e.g., dependencies like JWT, Requests)
+├── Redshift/               # Redshift configurations and scripts
+│   ├── pg-redshift-cluster/ # Redshift cluster setup and configurations
+├── S3/                     # S3 bucket structure and data handling configurations
+├── SecretManager/          # AWS Secrets Manager for storing sensitive data
+├── README.md               # Documentation for the repository
+```
+
+---
+
+## Added Services
+
+### EventBridge
+Manages EventBridge rules for triggering Lambda functions based on specified schedules or events.
+
+### IAM
+Contains JSON files for defining roles and policies, ensuring secure access to AWS services.
+
+### Config Directory (Inside Lambdas)
+- **.env**: Contains environment variables required by Lambda functions.
+- **permissions.py**: Configures Lambda permissions and roles for accessing AWS resources.
+- **layers.py**: Manages and configures shared Lambda layers for dependencies.
+
+### Service-Specific Configurations
+Each service folder includes a `details.py` file with explanations and main configurations for that particular service.
+
+---
+
+## How to Use
 
 ### Prerequisites
-1. AWS CLI configured with appropriate permissions.
-2. Python 3.9 or later.
-3. AWS SDKs (boto3).
+- **AWS CLI** configured with access to your account.
+- Python installed.
+- Proper IAM roles and permissions set up.
 
-### Installation
-1. Clone this repository.
+### Steps
+1. Clone the repository:
    ```bash
    git clone <repository-url>
-   cd pg-backend
+   cd PG-BACKEND
    ```
-2. Install necessary dependencies for the Lambda functions (if any).
-3. Deploy the Lambdas using your CI/CD pipeline or manually using AWS CLI.
 
-### Deployment
-1. Package Lambda functions with their dependencies.
-2. Deploy them to your AWS account using the AWS Management Console or AWS CLI.
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
----
+3. Deploy a Lambda function:
+   ```bash
+   cd Lambdas/<function-folder>
+   zip -r function.zip .
+   aws lambda update-function-code --function-name <lambda-name> --zip-file fileb://function.zip
+   ```
 
-## **Usage**
-
-### Key Features
-- **Data Management**: Handles data flow between Velocify, RingCentral, and Redshift.
-- **S3 Operations**: Processes and manages files in S3 buckets.
-- **Redshift Integration**: Supports SQL operations to insert, update, and delete data in Redshift.
-- **Data Cleanup**: Includes scripts to remove old or unnecessary data from S3.
-
-### Workflow
-- Velocify , Callrail and Ringcentral data is processed and validated.
-- Processed data is uploaded to S3.
-- Data is pushed into Redshift using the respective Lambda functions.
+4. Update `.env` with appropriate environment variables.
 
 ---
 
-## **Contributing**
-
+## Contributing
 1. Fork the repository.
-2. Create a new branch.
-3. Commit changes and push to your branch.
-4. Create a Pull Request.
+2. Create a new branch:
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+3. Commit your changes:
+   ```bash
+   git commit -m "Add some feature"
+   ```
+4. Push the branch:
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+5. Open a pull request.
 
 ---
 
-## **License**
-This project is licensed under the MIT License.
-
----
-
-## **Contact**
-For questions or support, reach out to the backend development team.
-
----
-
-## **Acknowledgments**
-- **Priority Gold Team** for the project initiative.
-- Open-source contributors for dependencies used in the project.
+## License
+This repository is licensed under the [MIT License](LICENSE).
