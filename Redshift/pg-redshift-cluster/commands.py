@@ -35,8 +35,7 @@ CREATE TABLE public.Call (
     Call_Forwarded BOOLEAN,
     Date_Time TIMESTAMP,
     Talk_Time INT,
-    Outcome VARCHAR(255),
-    Transcript TEXT
+    Outcome VARCHAR(255)
 );
 
 CREATE TABLE public.Broker (
@@ -47,4 +46,10 @@ CREATE TABLE public.Broker (
     extension VARCHAR(255),
     state VARCHAR(255),
     role VARCHAR(255)
+);
+
+CREATE TABLE public.Transcript (
+    Transcript_ID VARCHAR PRIMARY KEY,
+    Call_ID VARCHAR REFERENCES public.Call(Call_ID) NULL,
+    Transcript TEXT
 );

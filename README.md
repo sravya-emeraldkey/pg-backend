@@ -24,6 +24,7 @@ PG-BACKEND/
 │   ├── processRingCentralData/
 │   ├── processVelocifyData/
 │   ├── pushBrokersToRedshift/
+|   ├── pushCallTranscriptToRedshift/
 │   ├── pushVelocifyCallLogsToRedshift/
 │   ├── pushVelocifyLeadsToRedshift/
 │   ├── redshift-utility/
